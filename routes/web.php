@@ -5,14 +5,15 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/pegawai/{id}/download-all', [PegawaiController::class, 'downloadAll'])->name('pegawai.downloadAll');
         Route::get('/admin/unconfirmed-users', [AdminUserController::class, 'showUnconfirmedUsers'])->name('admin.unconfirmed_users');
         Route::post('/admin/confirm-user/{id}', [AdminUserController::class, 'confirmUser'])->name('admin.confirm_user');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+        Route::resource('users', UserController::class);
+
 
     });
 
@@ -43,10 +47,6 @@ Route::resource('pegawai', PegawaiController::class);
 
 Route::get('/test', function () {
     return view('test');
-});
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('users', UserController::class);
 });
 
 

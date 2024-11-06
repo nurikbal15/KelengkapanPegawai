@@ -39,7 +39,10 @@ class AuthenticatedSessionController extends Controller
         }
 
         // Cek role pengguna
-        if ($user->hasRole('user')) {
+        if ($user->hasRole('admin')) {
+            // Arahkan admin ke halaman dashboard
+            return redirect()->route('dashboard');
+        } elseif ($user->hasRole('user')) {
             // Cari data pegawai berdasarkan NIP pengguna
             $pegawai = Pegawai::where('nip', $user->nip)->first();
 
@@ -49,8 +52,8 @@ class AuthenticatedSessionController extends Controller
             }
         }
 
-        // Jika role bukan user, arahkan ke dashboard
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Jika role tidak cocok, arahkan ke halaman default (misal dashboard umum)
+        return redirect()->intended(route('home'));
     }
 
 

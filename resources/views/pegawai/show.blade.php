@@ -1,58 +1,68 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Detail Pegawai') }}
-        </h2>
-    </x-slot>
+@extends('layout')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="flex justify-between mb-4">
-                @role('admin')
-                    <a href="{{ route('pegawai.index') }}" class="bg-gray-500 text-white font-semibold py-2 px-4 rounded hover:bg-gray-600">
-                        {{ __('Kembali') }}
-                    </a>
-                @endrole
-                <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="bg-yellow-500 text-white font-semibold py-2 px-4 rounded hover:bg-yellow-600">
+@push('title')
+Detail Pegawai
+@endpush
+
+@section('content')
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">{{ __('Detail Pegawai') }}</h1>
+
+        <!-- Tombol Kembali -->
+        <div class="d-flex justify-content-between mb-4">
+            @role('admin')
+                <a href="{{ route('pegawai.index') }}" class="btn btn-secondary btn-sm shadow-sm">
+                    {{ __('Kembali') }}
+                </a>
+            @endrole
+        </div>
+
+        <!-- Informasi Pegawai -->
+        <div class="card shadow mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">{{ __('Informasi Pegawai') }}</h6>
+                <a href="{{ route('pegawai.edit', $pegawai->id) }}" class="btn btn-warning btn-sm shadow-sm">
                     {{ __('Edit') }}
                 </a>
             </div>
-
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-semibold mb-4 text-gray-700">{{ __('Informasi Pegawai') }}</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-                        <div class="flex">
-                            <strong class="w-32 text-gray-800">{{ __('NIP:') }}</strong>
-                            <p class="text-gray-600">{{ $pegawai->nip }}</p>
-                        </div>
-                        <div class="flex">
-                            <strong class="w-32 text-gray-800">{{ __('Nama:') }}</strong>
-                            <p class="text-gray-600">{{ $pegawai->nama }}</p>
-                        </div>
-                    </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">{{ __('NIP') }}</div>
+                    <div class="col-sm-9">{{ $pegawai->nip }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">{{ __('Nama') }}</div>
+                    <div class="col-sm-9">{{ $pegawai->nama }}</div>
                 </div>
             </div>
+        </div>
 
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg mt-6">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-semibold mb-4 text-gray-700">{{ __('Dokumen') }}</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        @foreach(['sk_cpns', 'sk_pns', 'kk', 'akte', 'ktp', 'ijazah_sd', 'ijazah_smp', 'ijazah_sma', 'ijazah_kuliah'] as $dokumen)
-                            <div class="flex items-center">
-                                <strong class="w-32 text-gray-800">{{ ucfirst(str_replace('_', ' ', $dokumen)) }}:</strong>
-                                @if($pegawai->$dokumen)
-                                    <a href="{{ asset('storage/' . $pegawai->$dokumen) }}" target="_blank" class="ml-2 text-blue-500 hover:underline">
-                                        {{ __('Lihat') }}
-                                    </a>
-                                @else
-                                    <span class="text-red-500 ml-2">{{ __('Tidak Tersedia') }}</span>
-                                @endif
+        <!-- Dokumen -->
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{ __('Dokumen') }}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach(['sk_cpns', 'sk_pns', 'kk', 'akte', 'ktp', 'ijazah_sd', 'ijazah_smp', 'ijazah_sma', 'ijazah_kuliah'] as $dokumen)
+                        <div class="col-sm-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <span class="font-weight-bold">{{ ucfirst(str_replace('_', ' ', $dokumen)) }}:</span>
+                                <div class="ml-2">
+                                    @if($pegawai->$dokumen)
+                                        <a href="{{ asset('storage/' . $pegawai->$dokumen) }}" target="_blank" class="text-primary ml-2">
+                                            {{ __('Lihat') }}
+                                        </a>
+                                    @else
+                                        <span class="text-danger ml-2">{{ __('Tidak Tersedia') }}</span>
+                                    @endif
+                                </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection
