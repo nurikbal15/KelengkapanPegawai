@@ -1,114 +1,105 @@
 @extends('layout')
 
 @push('title')
-Dashboard
-@endpush
-
-@push('custom-css')
-<link href="{{ asset ('assets/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    Overview
 @endpush
 
 @section('content')
-                <!-- Topbar -->
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
+<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+    <div class="container-xl px-4">
+        <div class="page-header-content pt-4">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto mt-4">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon"><i data-feather="activity"></i></div>
+                        Dashboard
+                    </h1>
                 </div>
-                <!-- /.container-fluid -->
+                <div class="col-12 col-xl-auto mt-4">
+                    <div class="input-group input-group-joined border-0" style="width: 16.5rem; background-color: white;">
+                        <span class="input-group-text" style="background-color: white;"><i class="text-primary" data-feather="calendar"></i></span>
+                        <input type="text" class="form-control ps-0 pointer" id="realtimeClock" placeholder="Current date and time..." readonly style="background-color: white;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main page content-->
+<div class="container-xl px-4 mt-n10">
+    <!-- Example Colored Cards for Dashboard Demo-->
+    <div class="row">
+        <div class="col-lg-6 col-xl-3 mb-4">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75 small">Total Pegawai</div>
+                            <div class="text-lg fw-bold">{{ $pegawaiCount }}</div> <!-- Menampilkan jumlah pegawai -->
+                        </div>
+                        <i class="feather-xl text-white-50" data-feather="users"></i> <!-- Menggunakan ikon "users" -->
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    <a class="text-white stretched-link" href="{{ route('pegawai.index') }}">Lihat Pegawai</a>
+                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-lg-6 col-xl-3 mb-4">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75 small">Total Pengguna</div>
+                            <div class="text-lg fw-bold">{{ $userCount }}</div> <!-- Menampilkan jumlah pengguna -->
+                        </div>
+                        <i class="feather-xl text-white-50" data-feather="users"></i> <!-- Menggunakan ikon "users" -->
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    <a class="text-white stretched-link" href="{{ route('users.index') }}">Lihat Pengguna</a> <!-- Mengarah ke route users.index -->
+                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xl-3 mb-4">
+            <div class="card bg-danger text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75 small">Pengguna Menunggu Konfirmasi</div>
+                            <div class="text-lg fw-bold">{{ $unconfirmedUserCount }}</div> <!-- Menampilkan jumlah pengguna menunggu konfirmasi -->
+                        </div>
+                        <i class="feather-xl text-white-50" data-feather="user-check"></i> <!-- Menggunakan ikon "user-check" -->
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    <a class="text-white stretched-link" href="{{ route('admin.unconfirmed_users') }}">Lihat Permintaan</a> <!-- Mengarah ke route admin.unconfirmed_users -->
+                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Example Charts for Dashboard Demo-->
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const options = {
+                weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            };
+            document.getElementById('realtimeClock').value = now.toLocaleDateString('en-US', options);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateClock(); // Update immediately when page loads
+            setInterval(updateClock, 1000); // Update every second
+        });
+    </script>
+</div>
 @endsection

@@ -1,74 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <title>@stack('title')</title>
     @include('part.head')
 </head>
+<body class="nav-fixed">
+    @include('part.navbar')
 
-<body id="page-top">
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        @include('part.sidebar')
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            @include('part.navbar')
-            <div id="content">
-
+    <!-- Cek apakah role pengguna adalah 'user' untuk mengatur tampilan tanpa sidebar -->
+    @if(Auth::user()->hasRole('user'))
+        <div id="layoutSidenav_content" style="margin-left: 0;">
+            <main>
                 @yield('content')
-
-            </div>
-            <!-- End of Main Content -->
-
+            </main>
             @include('part.footer')
-
         </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Logout') }}
-                        </button>
-                    </form>
-                </div>
+    @else
+        <div id="layoutSidenav">
+            @include('part.sidebar')
+            <div id="layoutSidenav_content">
+                <main>
+                    @yield('content')
+                </main>
+                @include('part.footer')
             </div>
         </div>
-    </div>
+    @endif
 
-    <!-- Bootstrap core JavaScript-->
     @include('part.script')
-
 </body>
-
 </html>

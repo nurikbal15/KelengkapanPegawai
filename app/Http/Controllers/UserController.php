@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use App\Models\Pegawai;
 
 class UserController extends Controller
 {
@@ -15,8 +15,20 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->get(); // Mengambil pengguna beserta role-nya
+        $users = User::with('roles')
+                     ->where('is_confirmed', 1) // Mengambil hanya pengguna yang sudah dikonfirmasi
+                     ->get();
+
         return view('users.index', compact('users'));
+    }
+
+    /**
+     * Display a listing of unconfirmed users for admin.
+     */
+    public function unconfirmedUsers()
+    {
+        $users = User::where('is_confirmed', false)->get(); // Mengambil user yang belum dikonfirmasi
+        return view('users.unconfirmed', compact('users'));
     }
 
     /**
@@ -40,34 +52,24 @@ class UserController extends Controller
             'role' => ['required', 'exists:roles,name'],
         ]);
 
-        // Buat user baru
+        // Buat user baru dengan status belum dikonfirmasi
         $user = User::create([
             'name' => $request->name,
             'nip' => $request->nip,
             'password' => Hash::make($request->password),
+            'is_confirmed' => true, // Status belum dikonfirmasi
         ]);
 
-        // Berikan role kepada user
+        // Menyimpan role user sementara, akan aktif setelah konfirmasi
         $user->assignRole($request->role);
 
-        // Buat data pegawai terkait user baru
-        Pegawai::create([
-            'nama' => $user->name,
-            'nip' => $user->nip,
-            // Tambahkan field tambahan jika ada, misalnya:
-            // 'jabatan' => $request->jabatan,
-        ]);
+        return redirect()->route('users.index')->with('success', 'User berhasil dibuat dan menunggu konfirmasi.');
+    }
 
-        return redirect()->route('users.index')->with('success', 'User dan data pegawai berhasil dibuat.');
-    }
+
     /**
-     * Show the form for editing the specified user.
+     * Confirm a user.
      */
-    public function edit(User $user)
-    {
-        $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
-    }
 
     /**
      * Update the specified user in storage.
@@ -89,8 +91,6 @@ class UserController extends Controller
         }
 
         $user->save();
-
-        // Update role
         $user->syncRoles($request->role);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');

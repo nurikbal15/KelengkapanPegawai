@@ -1,89 +1,81 @@
 @extends('layout')
 
 @push('title')
-Tambah Pegawai
+    Tambah Pegawai
 @endpush
 
 @section('content')
-    <div class="container-fluid">
-        <!-- Judul Halaman -->
-        <h1 class="h3 mb-4 text-gray-800">{{ __('Tambah Pegawai') }}</h1>
-
-        <!-- Tombol Kembali -->
-        <div class="d-flex justify-content-between mb-4">
-            <a href="{{ route('pegawai.index') }}" class="btn btn-secondary btn-sm shadow-sm">
-                {{ __('Kembali') }}
-            </a>
-        </div>
-
-        <!-- Form Tambah Pegawai -->
-        <div class="card shadow mb-4">
-            <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">{{ __('Form Tambah Pegawai') }}</h6>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('pegawai.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-
-                    <!-- Input Biasa -->
-                    <div class="mb-4">
-                        <!-- Nama Field -->
-                        <div class="form-group">
-                            <label for="nama">{{ __('Nama') }}</label>
-                            <input id="nama" type="text" name="nama" class="form-control" required>
-                            @error('nama')
-                                <small class="text-danger mt-2">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        <!-- NIP Field -->
-                        <div class="form-group">
-                            <label for="nip">{{ __('NIP') }}</label>
-                            <input id="nip" type="text" name="nip" class="form-control" required>
-                            @error('nip')
-                                <small class="text-danger mt-2">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Input Dokumen -->
-                    <div class="mb-4">
-                        <h6 class="font-weight-bold text-primary">{{ __('Dokumen') }}</h6>
-                        @foreach(['sk_cpns', 'sk_pns', 'kk', 'akte', 'ktp', 'ijazah_sd', 'ijazah_smp', 'ijazah_sma', 'ijazah_kuliah'] as $dokumen)
-                            <div class="form-group">
-                                <label for="{{ $dokumen }}">{{ __(ucfirst(str_replace('_', ' ', $dokumen))) }}</label>
-                                <div class="input-group">
-                                    <input type="file" id="{{ $dokumen }}" name="{{ $dokumen }}" class="form-control-file d-none">
-                                    <input type="text" class="form-control" placeholder="Pilih file..." readonly>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('{{ $dokumen }}').click();">Pilih File</button>
-                                    </div>
-                                </div>
-                                @error($dokumen)
-                                    <small class="text-danger mt-2">{{ $message }}</small>
-                                @enderror
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Tombol Simpan -->
-                    <div class="text-right mt-4">
-                        <button type="submit" class="btn btn-primary btn-sm shadow-sm">{{ __('Simpan') }}</button>
-                    </div>
-                </form>
+<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+    <div class="container-xl px-4">
+        <div class="page-header-content pt-4">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto mt-4">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                        Tambah Pegawai
+                    </h1>
+                </div>
             </div>
         </div>
-        
+    </div>
+</header>
+
+<!-- Main page content-->
+<div class="container-xl px-4 mt-n10">
+    <!-- Card for Nama and NIP -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Informasi Pegawai</span>
+            <button type="submit" form="pegawaiForm" class="btn btn-primary">
+                <span class="text">{{ __('Simpan') }}</span>
+            </button>
+        </div>
+        <div class="card-body">
+            <form id="pegawaiForm" action="{{ route('pegawai.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Nama Field -->
+                <div class="form-group mb-4">
+                    <label for="nama" class="font-weight-bold text-gray-800">{{ __('Nama') }}</label>
+                    <input id="nama" type="text" name="nama" class="form-control" required>
+                    @error('nama')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- NIP Field -->
+                <div class="form-group mb-4">
+                    <label for="nip" class="font-weight-bold text-gray-800">{{ __('NIP') }}</label>
+                    <input id="nip" type="text" name="nip" class="form-control" required>
+                    @error('nip')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+        </div>
     </div>
 
-    @push('scripts')
-    <script>
-        document.querySelectorAll('input[type="file"]').forEach(input => {
-            input.addEventListener('change', function () {
-                const fileName = this.files[0] ? this.files[0].name : 'Pilih file...';
-                this.nextElementSibling.value = fileName;
-            });
-        });
-    </script>
-    @endpush
+    <!-- Card for Dokumen Fields -->
+    <div class="card mb-4">
+        <div class="card-header">Dokumen</div>
+        <div class="card-body">
+            <div class="row">
+                @foreach(['sk_cpns', 'sk_pns', 'kk', 'akte', 'ktp', 'ijazah_sd', 'ijazah_smp', 'ijazah_sma', 'ijazah_kuliah'] as $dokumen)
+                    <div class="col-md-6 mb-4">
+                        <label for="{{ $dokumen }}" class="text-gray-800 font-weight-bold">{{ ucfirst(str_replace('_', ' ', $dokumen)) }}</label>
+                        <div class="form-file">
+                            <input type="file" class="form-file-input" id="{{ $dokumen }}" name="{{ $dokumen }}">
+                            <label class="form-file-label" for="{{ $dokumen }}">
+                            </label>
+                        </div>
+                        @error($dokumen)
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
 @endsection
+

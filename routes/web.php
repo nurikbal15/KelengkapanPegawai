@@ -34,7 +34,15 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
 
 
+
     });
+
+    // Route::middleware(['auth', 'checkUserConfirmed'])->group(function () {
+    //     Route::get('/pegawai/{pegawai}', [PegawaiController::class, 'show'])->name('pegawai.show');
+    //     Route::get('/pegawai/{pegawai}/edit', [PegawaiController::class, 'edit'])->name('pegawai.edit');
+    //     Route::put('/pegawai/{pegawai}', [PegawaiController::class, 'update'])->name('pegawai.update');
+
+    // });
 
     // Route khusus user untuk melihat dan mengedit data pegawai mereka sendiri
     Route::middleware('role:user')->group(function () {

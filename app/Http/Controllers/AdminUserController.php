@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Pegawai;
 use Illuminate\Http\RedirectResponse;
 
 class AdminUserController extends Controller
@@ -13,15 +14,28 @@ class AdminUserController extends Controller
         return view('admin.unconfirmed_users', compact('users'));
     }
 
-    public function confirmUser($id): RedirectResponse
+    public function confirmUser($id)
     {
         $user = User::findOrFail($id);
-        $user->is_confirmed = true;
+        $user->is_confirmed = true; // Konfirmasi user
         $user->save();
 
-        // Beri role "user" setelah konfirmasi
-        $user->assignRole('user');
+        // Periksa apakah data Pegawai dengan NIP yang sama sudah ada
+        if (!Pegawai::where('nip', $user->nip)->exists()) {
+            // Buat data pegawai setelah konfirmasi jika belum ada
+            Pegawai::create([
+                'nama' => $user->name,
+                'nip' => $user->nip,
+            ]);
+        }
 
-        return redirect()->back()->with('status', 'User berhasil dikonfirmasi.');
+        return redirect()->route('admin.unconfirmed_users')->with('success', 'User berhasil dikonfirmasi dan data pegawai telah ditambahkan.');
     }
+
+
+
+
+
+
+
 }
